@@ -1,0 +1,29 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:gui="clr-namespace:Rajax.Avalonia.UI.Controls;assembly=Rajax.Avalonia.UI"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Rajax.Avalonia.App.Views.WatchWindow"
+	    Classes="GuiWindow"
+	    xmlns:cef="clr-namespace:Rajax.Avalonia.CefGlueApp.Browser;assembly=Rajax.Avalonia.CefGlueApp"
+        CanResize="True"
+ WindowStartupLocation="CenterScreen"
+		Title="WatcWindow">
+
+ 
+	<Panel>
+		<DockPanel>
+
+			<gui:SystemBar LogoImage="/Assets/avalonia-logo.ico" IsVisible="False" CustomLogoVisibility="True" BorderBrush="Red" DockPanel.Dock="Top">
+			</gui:SystemBar>
+
+			<Panel  DockPanel.Dock="Bottom" Background="AntiqueWhite">
+				 <cef:AvaloniaCefBrowser   StartUrl="http://localhost:4200/#/monitor/view?scenarioId=7132538512284454912" x:Name="browser" />
+				 <!--<cef:TemplatedControl1 Width="1000" Height="1000" />-->
+			</Panel>
+		</DockPanel>
+	</Panel>
+
+
+</Window>

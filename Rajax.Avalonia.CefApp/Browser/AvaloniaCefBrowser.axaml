@@ -1,0 +1,23 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Rajax.Avalonia.CefGlueApp.Browser">
+  <Design.PreviewWith>
+    <controls:AvaloniaCefBrowser />
+  </Design.PreviewWith>
+
+  <Style Selector="controls|AvaloniaCefBrowser">
+    <!-- Set Defaults -->
+    <Setter Property="Template">
+      <ControlTemplate>
+		
+		  <Border BorderBrush="{TemplateBinding BorderBrush}"
+					   BorderThickness="{TemplateBinding BorderThickness}"
+					   Padding="{TemplateBinding Padding}">
+			  <Grid Background="{TemplateBinding Background}">
+				  <Image Name="PART_Image" Stretch="None" Focusable="false" />
+			  </Grid>
+		  </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+</Styles>

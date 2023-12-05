@@ -1,0 +1,163 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:material="using:Material.Icons.Avalonia"
+             xmlns:gui="using:Rajax.Avalonia.UI.Controls"
+			 mc:Ignorable="d"
+			 d:DesignHeight="500"
+             d:DesignWidth="800"
+             x:Class="Rajax.Avalonia.UI.Controls.SystemBar">
+	<UserControl.Resources>
+		<Color x:Key="SysBtnBackground">Transparent</Color>
+		<Color x:Key="SysBtnBorderBrush">White</Color>
+		<Color x:Key="SysBarBorderBrush">Red</Color>
+	</UserControl.Resources>
+	<UserControl.Styles>
+
+		<Style Selector="Button.SysBtn">
+
+			<Setter Property="BorderThickness" Value="0" />
+			<Setter Property="BorderBrush" Value="{DynamicResource  SysBtnBorderBrush}" />
+			<Setter Property="Padding" Value="0" />
+			<Setter Property="CornerRadius" Value="0" />
+			<Setter Property="Margin" Value="0 0" />
+			<Setter Property="Background" Value="{DynamicResource SysBtnBackground}" />
+
+			<Setter Property="Template">
+				<ControlTemplate>
+					<ContentPresenter
+						Background="{TemplateBinding Background}"
+						BorderBrush="{TemplateBinding BorderBrush}"
+						BorderThickness="{TemplateBinding BorderThickness}"
+			 
+						Content="{TemplateBinding Content}"
+						ContentTemplate="{TemplateBinding ContentTemplate}"
+						CornerRadius="{TemplateBinding CornerRadius}"
+						HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+						Margin="0"
+						Name="PART_ContentPresenter"
+						Padding="{TemplateBinding Padding}"
+						RecognizesAccessKey="True"
+						TextElement.Foreground="{TemplateBinding Foreground}"
+						VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+				</ControlTemplate>
+			</Setter>
+			<Setter Property="Transitions">
+				<Transitions>
+					<BrushTransition Duration="0:0:0.35" Property="Background" />
+				</Transitions>
+			</Setter>
+		</Style>
+
+		<Style Selector="Button:pressed /template/ ContentPresenter">
+			<Setter Property="Background" Value="#878787" />
+			<Setter Property="BorderBrush" Value="Transparent" />
+
+		</Style>
+
+
+
+
+		<Style Selector="Button:pressed /template/ ContentPresenter">
+
+			<Setter Property="RenderTransform">
+				<Setter.Value>
+					<!--<ScaleTransform ScaleX="0.97" ScaleY="0.97" />-->
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+		<Style Selector="gui|SystemBar">
+			<Setter Property="IsVisible" Value="{TemplateBinding IsVisible}"></Setter>
+			<Setter Property="Template">
+				<ControlTemplate>
+					<DockPanel Margin="5">
+						<Border
+							BorderBrush="{DynamicResource SysBarBorderBrush}"
+							BorderThickness="0,0,0,1.5"
+							DockPanel.Dock="Top">
+							<Grid  ColumnDefinitions="*,Auto"  RowDefinitions="Auto,*" >
+								<Grid   IsHitTestVisible="False"   Grid.Column="0"  ColumnDefinitions="Auto,Auto,*,*">
+									<material:MaterialIcon Grid.Column="0"
+														   Foreground="{TemplateBinding LogoColor}"
+														   Height="25"
+														   HorizontalAlignment="Left"
+														   IsHitTestVisible="False"
+														   Margin="10"
+														   Kind="{TemplateBinding LogoKind}"
+														   Width="25" />
+									<Border IsHitTestVisible="False"  IsVisible="{TemplateBinding CustomLogoVisibility}"   Grid.Column="1" Width="25" Margin="0,0,10,0">
+										<Image Source="{TemplateBinding LogoImage}" />
+									</Border>
+									<TextBlock
+									  
+									  FontSize="{TemplateBinding FontSize}"
+									  FontWeight="{TemplateBinding FontWeight}"
+									  Grid.Column="2"
+									  HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+									  IsHitTestVisible="False"
+									  Text="{TemplateBinding Title}"
+									  VerticalAlignment="Center" />
+									<ContentControl Grid.Column="3"  Content="{TemplateBinding Content}" />
+								</Grid>
+								<DockPanel Cursor="Hand" Grid.Column="1" Margin="0" VerticalAlignment="Top">
+									<Button
+									  
+                                        BorderThickness="0"
+                                        Classes="SysBtn"
+                                        Height="31"
+                                        IsHitTestVisible="True"
+                                        Margin="0,0,0,0"
+                                        Padding="0"
+                                        Width="44">
+										<material:MaterialIcon
+                                            Foreground="#3b3b3b"
+                                            Width="18"
+                                            Height="18"
+                                            BorderThickness="0.8"
+                                            Kind="Minus"/>
+									</Button>
+									<Button
+                                        BorderThickness="0"
+									   Classes="SysBtn"
+									   Height="31"
+									   IsHitTestVisible="True"
+							           Margin="0,0,0,0"
+									   Padding="0"
+									   Width="44">
+										<material:MaterialIcon
+                                            Foreground="#3b3b3b"
+											Width="18"
+                                            Height="18"
+											BorderThickness="0.8"
+                                            Kind="CheckboxBlankOutline"/>
+									</Button>
+									<Button
+									    
+									   BorderThickness="0"
+									   Classes="SysBtn"
+									   Height="31"
+									   IsHitTestVisible="True"
+							           Margin="0,0,0,0"
+									   Padding="0"
+									   Width="44">
+										<material:MaterialIcon
+                                            Foreground="#3b3b3b"
+											Width="18"
+                                            Height="18"
+											BorderThickness="0.8"
+                                            Kind="Close"/>
+									</Button>
+								</DockPanel>
+							</Grid>
+
+						</Border>
+
+
+					</DockPanel>
+				</ControlTemplate>
+			</Setter>
+		</Style>
+	</UserControl.Styles>
+</UserControl>

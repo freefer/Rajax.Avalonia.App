@@ -1,0 +1,17 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<Design.PreviewWith>
+		<Border Padding="20">
+			<!-- Add Controls for Previewer Here -->
+		</Border>
+	</Design.PreviewWith>
+	<Style Selector="Window.GuiWindow">
+		<Setter Property="Background" Value="RosyBrown"/>
+		<!--linux去掉标题栏影响 窗口阴影、拖动、调整大小、双击以最大化-->
+		<!--<Setter Property="SystemDecorations" Value="BorderOnly" />-->
+		<!--<Setter Property="TransparencyLevelHint" Value="AcrylicBlur" /> 
+		<Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
+		<Setter Property="ExtendClientAreaChromeHints" Value="NoChrome" />
+		<Setter Property="ExtendClientAreaTitleBarHeightHint" Value="-1" />-->
+	</Style>
+</Styles>
