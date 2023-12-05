@@ -40,7 +40,7 @@ namespace Rajax.Avalonia.App
                     ResourcesDirPath = execFolder,
                    // RemoteDebuggingPort = 20480,
                     NoSandbox = true,
-                    WindowlessRenderingEnabled = false,
+                    WindowlessRenderingEnabled = true,
                     LocalesDirPath = Path.Combine(execFolder, "locales"),
                     FrameworkDirPath = execFolder,
                     CachePath = Path.Combine(execFolder, "cach"),

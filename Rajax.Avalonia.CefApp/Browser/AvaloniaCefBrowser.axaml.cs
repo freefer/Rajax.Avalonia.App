@@ -16,10 +16,10 @@ using Avalonia.Controls.Shapes;
 using System.Diagnostics;
 using System.Reflection.Metadata;
 using MouseButton = Avalonia.Input.MouseButton;
-
+ 
 namespace Rajax.Avalonia.CefGlueApp.Browser
 {
-
+     
     public class AvaloniaCefBrowser : TemplatedControl
     {
         private static readonly Key[] HandledKeys =
@@ -80,7 +80,7 @@ namespace Rajax.Avalonia.CefGlueApp.Browser
         {
             var temp = new Image();
 
-            RenderOptions.SetBitmapInterpolationMode(temp, BitmapInterpolationMode.Default);
+            RenderOptions.SetBitmapInterpolationMode(temp, BitmapInterpolationMode.None);
 
             temp.Stretch = Stretch.None;
             temp.HorizontalAlignment = HorizontalAlignment.Left;
@@ -114,7 +114,7 @@ namespace Rajax.Avalonia.CefGlueApp.Browser
                     {
                         if (!_created)
                         {
-                           // AttachEventHandlers(this); // TODO: ?
+                             AttachEventHandlers(this); // TODO: ?
 
                             // Create the bitmap that holds the rendered website bitmap
                             _browserWidth = newWidth;
@@ -122,26 +122,25 @@ namespace Rajax.Avalonia.CefGlueApp.Browser
                             _browserSizeChanged = true;
 
                             // Find the window that's hosting us                        
-                             Window parentWnd = this.GetVisualRoot() as Window;
-                        
+                            var parentWnd = TopLevel.GetTopLevel(this).TryGetPlatformHandle().Handle;
                             if (parentWnd != null)
                             {
                               
-                                IntPtr? hParentWnd = parentWnd.PlatformImpl.Handle.Handle;
+                                IntPtr hParentWnd = parentWnd;
 
                                 var windowInfo = CefWindowInfo.Create();
-                                // windowInfo.SetAsWindowless(hParentWnd, AllowsTransparency);
+                                windowInfo.SetAsWindowless(hParentWnd, AllowsTransparency);
                                 windowInfo.SharedTextureEnabled = true;
                               
                                 //windows dot not use Windowless
-                               windowInfo.SetAsChild(hParentWnd.Value, new CefRectangle(0, 0, _browserWidth, _browserHeight));
+                               //windowInfo.SetAsChild(hParentWnd, new CefRectangle(0, 0, _browserWidth, _browserHeight));
 
                                 var settings = new CefBrowserSettings();
                                 settings.WindowlessFrameRate = 60;
                     
                                 
                                 _cefClient = new CefWebClient(this);
-                                Console.WriteLine($"SetAsChild, hParentWnd is null{hParentWnd == null} {hParentWnd}");
+                                Console.WriteLine($"SetAsChild, hParentWnd is null {hParentWnd == null} {hParentWnd}");
                                 // This is the first time the window is being rendered, so create it.
                                 CefBrowserHost.CreateBrowser(windowInfo, _cefClient, settings, !string.IsNullOrEmpty(StartUrl) ? StartUrl : "about:blank");
 
@@ -162,7 +161,7 @@ namespace Rajax.Avalonia.CefGlueApp.Browser
                                 {
                                     //windows api
                                   //  NativeMethods.SetWindowPos(_browserHost.GetWindowHandle(), IntPtr.Zero,0, 0, _browserWidth, _browserHeight, SetWindowPosFlags.NoMove | SetWindowPosFlags.NoZOrder);
-                                    //_browserHost.WasResized();
+                                   _browserHost.WasResized();
                                 }
                             }
                         }
@@ -178,6 +177,9 @@ namespace Rajax.Avalonia.CefGlueApp.Browser
             return size;
 
         }
+        
+
+         
 
         private bool isShiftKeyPressed = false;
         private bool isAltKeyPressed = false;
@@ -388,6 +390,7 @@ namespace Rajax.Avalonia.CefGlueApp.Browser
                 }
             };
 
+           
             browser.PointerWheelChanged += (sender, arg) =>
             {
                 try
@@ -395,15 +398,22 @@ namespace Rajax.Avalonia.CefGlueApp.Browser
                     if (_browserHost != null)
                     {
                         Point cursorPos = arg.GetPosition(this);
-
+                      
                         CefMouseEvent mouseEvent = new CefMouseEvent()
                         {
                             X = (int)cursorPos.X,
                             Y = (int)cursorPos.Y,
                         };
 
-                        _browserHost.SendMouseWheelEvent(mouseEvent, (int)arg.Delta.X, (int)arg.Delta.Y);
+                        const int WHEEL_DELTA = 120;
+                        var pointer = arg.GetCurrentPoint(this);
+                        mouseEvent.Modifiers = GetMouseModifiers(pointer);
+                        var x = (int)arg.Delta.X * WHEEL_DELTA;
+                        var y = (int)arg.Delta.Y * WHEEL_DELTA;
+                        _browserHost.SendMouseWheelEvent(mouseEvent, x, y);
                     }
+
+                    arg.Handled = true;
                 }
                 catch (Exception ex)
                 {
@@ -586,10 +596,12 @@ namespace Rajax.Avalonia.CefGlueApp.Browser
                             X = (int)cursorPos.X,
                             Y = (int)cursorPos.Y
                         };
-
+                        const int WHEEL_DELTA = 120;
                         var pointer = arg.GetCurrentPoint(this);
                         mouseEvent.Modifiers = GetMouseModifiers(pointer);
-                        _browserHost.SendMouseWheelEvent(mouseEvent, 0, (int)arg.Delta.Y);
+                        var x = (int)arg.Delta.X * WHEEL_DELTA;
+                        var y = (int)arg.Delta.Y * WHEEL_DELTA;
+                        _browserHost.SendMouseWheelEvent(mouseEvent,x  ,y );
 
                         //_logger.Debug(string.Format("MouseWheel: ({0},{1})", cursorPos.X, cursorPos.Y));
                     }
@@ -802,11 +814,13 @@ namespace Rajax.Avalonia.CefGlueApp.Browser
                 if (_browserPageBitmap != null)
                 {
                     DoRenderBrowser(_browserPageBitmap, width, height, dirtyRects, buffer);
-                    Dispatcher.UIThread.InvokeAsync(() =>
+                    Dispatcher.UIThread.Post(() =>
                     {
                         _browserPageImage.Source = _browserPageBitmap;
                         _browserPageImage.InvalidateVisual();
                     });
+
+
                 }
 
             }
